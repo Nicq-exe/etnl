@@ -6,7 +6,7 @@ G[0], G[1] = game.PlaceId, {17742652951, 615881305, 455093794, 3880898591, 58260
 T[1] = table.find
 
 if T[1](G[1], G[0]) then
-    http("https://xxxx.rip/p/raw/nil")
+    http("https://")
 else
-    http("https://xxxx.rip/p/raw/nil")
+    http("https://")
 end
