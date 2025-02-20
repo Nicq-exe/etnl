@@ -2,10 +2,10 @@ local function http(...) loadstring(game:HttpGetAsync(...))() end
 
 T,G = {},{}
 
-G[0], G[1] = game.PlaceId, {17742652951, 615881305, 455093794, 3880898591, 582601658, 16211666354, 794299040, 455096751, 16676172011, 15918631033, 228181322, 15946233991}
+G[0],G[1] = game.PlaceId, {17742652951, 615881305, 455093794, 3880898591, 582601658, 16211666354, 794299040, 455096751, 16676172011, 15918631033, 228181322, 15946233991}
 T[1] = table.find
 
-if T[1](G[1], G[0]) then
+if T[1](G[1],G[0]) then
     http("https://raw.githubusercontent.com/Nicq-exe/etnl/refs/heads/main/V%5B3%5D")
 else
     http("https://raw.githubusercontent.com/Nicq-exe/etnl/refs/heads/main/V%5B2%5D")
