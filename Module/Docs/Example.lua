@@ -1,5 +1,6 @@
 local UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nicq-exe/etnl/refs/heads/main/Module/UI.lua"))()
 local UiVariable = UI:Create{Name = "Example",Size = UDim2.fromOffset(600, 400),Theme = UI.Themes.Dark,Link = "https://Eternal.rip"}
+UiVariable:set_status("Your Watermark Here")
 UiVariable:Notification{
 	Title = "Example Notification",Text = "Thank You For Choosing Eternal.",Duration = 10,Callback = function()
 		-- Your Code To Execute When Notification Duration Is Reached
