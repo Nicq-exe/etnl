@@ -848,6 +848,75 @@ function Library:create(options)
 	}, Library)
 
 	do -- Settings
+
+		local MBT = {[2] = 25}
+		local MobileToggleButton = Drawing.new("Circle")
+		MobileToggleButton.Radius = MBT[2]
+		MobileToggleButton.Filled = true
+		MobileToggleButton.Visible = false
+		MobileToggleButton.Color = Color3.fromRGB(255, 255, 255)
+		
+		local isHolding = false
+		local isDragging = false
+		local dragOffset = Vector2.new(0, 0)
+		local currentPos = Vector2.new(0, 0)
+		local buttonState = false
+		local hasToggled = false
+	
+		local userInput = game:GetService("UserInputService")
+		local runService = game:GetService("RunService")
+
+		userInput.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				local mouse_pos = userInput:GetMouseLocation()
+				local dx = mouse_pos.X - MobileToggleButton.Position.X
+				local dy = mouse_pos.Y - MobileToggleButton.Position.Y
+				if (dx * dx + dy * dy) <= (MobileToggleButton.Radius * MobileToggleButton.Radius) then
+					isHolding = true
+					dragOffset = MobileToggleButton.Position - mouse_pos
+					hasToggled = false            
+					task.delay(0.25, function()
+						if isHolding then
+							isDragging = true
+						end
+					end)
+				end
+			end
+		end)
+		userInput.InputEnded:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if isHolding and not isDragging and not hasToggled then
+					buttonState = not buttonState
+					MBT[3] = buttonState
+					print("Toggled: ", buttonState)
+					hasToggled = true
+				end
+				isHolding = false
+				isDragging = false
+			end
+		end)
+		runService.Heartbeat:Connect(function()
+			if MBT[1] then
+				local camera = workspace.CurrentCamera
+				local mouse_pos = userInput:GetMouseLocation()
+	
+				if currentPos == Vector2.new(0, 0) then
+					currentPos = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
+				end
+	
+				if isDragging then
+					currentPos = mouse_pos + dragOffset
+				end
+	
+				MobileToggleButton.Position = currentPos
+				MobileToggleButton.Visible = true
+				MobileToggleButton.Radius = MBT[2]
+			else
+				MobileToggleButton.Visible = false
+			end
+		end)
+	
+
 		local settingsTabIcon = profile:object("ImageButton", {BackgroundTransparency = 1,Theme = {ImageColor3 = "WeakText"},Size = UDim2.fromOffset(24, 24),Position = UDim2.new(1, -10, 1, -10),AnchorPoint = Vector2.new(1, 1),Image = "http://www.roblox.com/asset/?id=10709810948"}):tooltip("settings")
 		local settingsTab = Library.tab(mt, {Name = "Settings",Internal = settingsTabIcon,Icon = "rbxassetid://10709810948"})
 		settingsTab:_theme_selector()
@@ -902,77 +971,8 @@ function Library:create(options)
 				Library.DragSpeed = (20 - value)/100
 			end,
 		}
-        do--//MobileToggle??//
-			local MBT = {[2] = 25}
-			local MobileToggleButton = Drawing.new("Circle")
-			MobileToggleButton.Radius = MBT[2]
-			MobileToggleButton.Filled = true
-			MobileToggleButton.Visible = false
-			MobileToggleButton.Color = Color3.fromRGB(255, 255, 255)
-			
-			local isHolding = false
-			local isDragging = false
-			local dragOffset = Vector2.new(0, 0)
-			local currentPos = Vector2.new(0, 0)
-			local buttonState = false
-			local hasToggled = false
-		
-			local userInput = game:GetService("UserInputService")
-			local runService = game:GetService("RunService")
-
-			userInput.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
-					local mouse_pos = userInput:GetMouseLocation()
-					local dx = mouse_pos.X - MobileToggleButton.Position.X
-					local dy = mouse_pos.Y - MobileToggleButton.Position.Y
-					if (dx * dx + dy * dy) <= (MobileToggleButton.Radius * MobileToggleButton.Radius) then
-						isHolding = true
-						dragOffset = MobileToggleButton.Position - mouse_pos
-						hasToggled = false            
-						task.delay(0.25, function()
-							if isHolding then
-								isDragging = true
-							end
-						end)
-					end
-				end
-			end)
-			userInput.InputEnded:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
-					if isHolding and not isDragging and not hasToggled then
-						buttonState = not buttonState
-						MBT[3] = buttonState
-						print("Toggled: ", buttonState)
-						hasToggled = true
-					end
-					isHolding = false
-					isDragging = false
-				end
-			end)
-			runService.Heartbeat:Connect(function()
-				if MBT[1] then
-					local camera = workspace.CurrentCamera
-					local mouse_pos = userInput:GetMouseLocation()
-		
-					if currentPos == Vector2.new(0, 0) then
-						currentPos = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
-					end
-		
-					if isDragging then
-						currentPos = mouse_pos + dragOffset
-					end
-		
-					MobileToggleButton.Position = currentPos
-					MobileToggleButton.Visible = true
-					MobileToggleButton.Radius = MBT[2]
-				else
-					MobileToggleButton.Visible = false
-				end
-			end)
-		
-			settingsTab:toggle{Name = "Mobile Button", Description = "Peak Mobile Support.", StartingState = false, Callback = function(state) MBT[1] = state end}
-			settingsTab:Slider{Name = "Button Size", Default = 25, Increment = 1, Min = 1, Max = 50, Callback = function(V) MBT[2] = V end}
-        end
+		settingsTab:toggle{Name = "Mobile Button", Description = "Peak Mobile Support.", StartingState = false, Callback = function(state) MBT[1] = state end}
+		settingsTab:Slider{Name = "Button Size", Default = 25, Increment = 1, Min = 1, Max = 50, Callback = function(V) MBT[2] = V end}
 	end
 
 	do -- Credits
