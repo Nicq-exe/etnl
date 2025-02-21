@@ -865,6 +865,11 @@ function Library:create(options)
 			Description = "Toggles UI When Button Clicked.",
 			StartingState = true,
 			Callback = function(state)
+				Library:show(true)
+				wait(0.5)
+				Library:show(false)
+				wait(0.5)
+				Library:show(true)
 			end,
 		}
 		settingsTab:toggle{
