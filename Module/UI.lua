@@ -942,7 +942,7 @@ function Library:create(options)
 					if isHolding and not isDragging and not hasToggled then
 						buttonState = not buttonState
 						MBT[3] = buttonState
-						print("Toggled: ", buttonState)
+						Library:show(MBT[3])
 						hasToggled = true
 					end
 					isHolding = false
