@@ -860,11 +860,10 @@ function Library:create(options)
 				Library:show(self.Toggled)
 			end,
 		}
-		settingsTab:toggle{
+		settingsTab:button{
 			Name = "Mobile Toggle Button",
 			Description = "Toggles UI When Button Clicked.",
-			StartingState = true,
-			Callback = function(state)
+			Callback = function()
 				Library:show(true)
 				wait(0.5)
 				Library:show(false)
