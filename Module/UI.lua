@@ -979,7 +979,6 @@ function Library:create(options)
 		local creditsTabIcon = profile:object("ImageButton", {BackgroundTransparency = 1,Theme = {ImageColor3 = "WeakText"},Size = UDim2.fromOffset(24, 24),Position = UDim2.new(1, -44, 1, -10),AnchorPoint = Vector2.new(1, 1),Image = "http://www.roblox.com/asset/?id=10709769406"}):tooltip("credits")
 		local creditsTab = Library.tab(mt, {Name = "Credits",Internal = creditsTabIcon,Icon = "http://www.roblox.com/asset/?id=10709769406"})
 		rawset(mt, "creditsContainer", creditsTab.container)
-		creditsTab:credit{Name = "Nico", Description = "Lead Developer Of Eternal.", Discord = "@gxs9"}
 	end
 
 	return mt
