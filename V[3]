@@ -1,1 +1,7 @@
-print("Test 2")
+local _ = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nicq-exe/etnl/refs/heads/main/Module/UI.lua"))()
+local __ = _:Create{
+    Name = "Eternal",
+    Size = UDim2.fromOffset(getgenv().UiConfig.Width or 600, getgenv().UiConfig.Height or 400),
+    Theme = (getgenv().UiConfig.Theme and _.Themes[getgenv().UiConfig.Theme] or _.Themes.Ultraviolet),
+    Link = "https://Eternal.rip"
+}
