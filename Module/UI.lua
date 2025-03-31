@@ -860,15 +860,6 @@ function Library:create(options)
 				Library:show(self.Toggled)
 			end,
 		}
-		settingsTab:button{
-			Name = "Mobile Toggle Button",
-			Description = "Toggles UI When Button Clicked.",
-			Callback = function()
-				Library:show(false)
-				wait(0.5)
-				Library:show(true)
-			end,
-		}
 		settingsTab:toggle{
 			Name = "Window Bound",
 			Description = "Lock UI inside the window",
