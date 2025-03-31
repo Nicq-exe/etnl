@@ -912,13 +912,19 @@ function Library:create(options)
 			local runService = game:GetService("RunService")
 
 			userInput.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
-					local mouse_pos = userInput:GetMouseLocation()
-					local dx = mouse_pos.X - MobileToggleButton.Position.X
-					local dy = mouse_pos.Y - MobileToggleButton.Position.Y
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+					local inputPos
+					if input.UserInputType == Enum.UserInputType.Touch then
+						inputPos = input.Position
+					else
+						inputPos = userInput:GetMouseLocation()
+					end
+					
+					local dx = inputPos.X - MobileToggleButton.Position.X
+					local dy = inputPos.Y - MobileToggleButton.Position.Y
 					if (dx * dx + dy * dy) <= (MobileToggleButton.Radius * MobileToggleButton.Radius) then
 						isHolding = true
-						dragOffset = MobileToggleButton.Position - mouse_pos
+						dragOffset = MobileToggleButton.Position - inputPos
 						hasToggled = false            
 						task.delay(0.25, function()
 							if isHolding then
@@ -929,7 +935,7 @@ function Library:create(options)
 				end
 			end)
 			userInput.InputEnded:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 					if isHolding and not isDragging and not hasToggled then
 						buttonState = not buttonState
 						MBT[3] = buttonState
@@ -943,16 +949,23 @@ function Library:create(options)
 			runService.Heartbeat:Connect(function()
 				if MBT[1] then
 					local camera = workspace.CurrentCamera
-					local mouse_pos = userInput:GetMouseLocation()
-		
+					local inputPos
+					
+					if userInput:GetLastInputType() == Enum.UserInputType.Touch then
+						local touch = userInput:GetTouchInputs()[1]
+						inputPos = touch and touch.Position or Vector2.new(0, 0)
+					else
+						inputPos = userInput:GetMouseLocation()
+					end
+			
 					if currentPos == Vector2.new(0, 0) then
 						currentPos = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
 					end
-		
+			
 					if isDragging then
-						currentPos = mouse_pos + dragOffset
+						currentPos = inputPos + dragOffset
 					end
-		
+			
 					MobileToggleButton.Position = currentPos
 					MobileToggleButton.Visible = true
 					MobileToggleButton.Radius = MBT[2]
